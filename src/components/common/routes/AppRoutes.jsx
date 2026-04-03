@@ -15,7 +15,7 @@ const AppRoutes = () => {
         <Route path="section-1-1" element={<StepperFiveSteps />} />
         <Route path="section-1-2" element={<StepperThreeSteps />} />
         <Route path="section-1-3" element={<SectionWithTable />} />
-        <Route path="section-2-1" element={<SimpleFormExample />} />
+        <Route path="section-2-1" element={<SectionWithTable />} />
         <Route
           path="section-2-2"
           element={
