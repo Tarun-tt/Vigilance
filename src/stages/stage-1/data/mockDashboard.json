@@ -1,0 +1,32 @@
+{
+  "approvalList": [
+    {
+      "id": "1",
+      "referenceNumber": "CLM12122025",
+      "typeOfComplaint": "Fraud",
+      "sourceOfComplaint": "FRMD",
+      "status": "Approved"
+    },
+    {
+      "id": "2",
+      "referenceNumber": "CLM13122025",
+      "typeOfComplaint": "PIDPI",
+      "sourceOfComplaint": "Customer",
+      "status": "Draft"
+    },
+    {
+      "id": "3",
+      "referenceNumber": "CLM14122025",
+      "typeOfComplaint": "CVC",
+      "sourceOfComplaint": "RBI",
+      "status": "Pending"
+    },
+    {
+      "id": "4",
+      "referenceNumber": "CLM15122025",
+      "typeOfComplaint": "Whistle blower",
+      "sourceOfComplaint": "Agency",
+      "status": "Not approved"
+    }
+  ]
+}

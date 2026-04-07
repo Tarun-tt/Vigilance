@@ -1,0 +1,37 @@
+{
+  "stages": [
+    {
+      "id": 2,
+      "label": "Stage 2",
+      "subItems": [
+        { "id": "2.1", "label": "2.1 Investigation" },
+        { "id": "2.2", "label": "2.2 CA Comments" },
+        { "id": "2.3", "label": "2.3 IAC" },
+        { "id": "2.4", "label": "2.4 FSP" }
+      ]
+    },
+    {
+      "id": 3,
+      "label": "Stage 3",
+      "subItems": [
+        { "id": "3.1", "label": "3.1 AOC" },
+        { "id": "3.2", "label": "3.2 Enquiry" },
+        { "id": "3.3", "label": "3.3 SSP" },
+        { "id": "3.4", "label": "3.4 Penalty" }
+      ]
+    },
+    {
+      "id": 4,
+      "label": "Stage 4",
+      "subItems": [{ "id": "4.1", "label": "4.1 ABBFF" }]
+    },
+    {
+      "id": 5,
+      "label": "Stage 5",
+      "subItems": [
+        { "id": "5.1", "label": "5.1 Appeal" },
+        { "id": "5.2", "label": "5.2 Review" }
+      ]
+    }
+  ]
+}

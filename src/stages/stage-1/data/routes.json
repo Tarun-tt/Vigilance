@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/stage-1/approval",
+    "stageId": 1,
+    "subItemId": "1.1",
+    "kind": "approval",
+    "sidebarPath": "/stage-1/approval",
+    "approvalDefaultTab": "add"
+  },
+  {
+    "path": "/stage-1/complaint-registration",
+    "stageId": 1,
+    "subItemId": "1.2",
+    "kind": "complaint",
+    "sidebarPath": "/stage-1/complaint-registration"
+  }
+]

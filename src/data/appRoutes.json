@@ -1,0 +1,118 @@
+{
+  "defaultRedirect": "/stage-1/approval",
+  "investigationSteps": [
+    { "id": "1", "label": "01 Investigation Details" },
+    { "id": "2", "label": "02 Vetting of Investigation" },
+    { "id": "3", "label": "03 Identified Employee Details" },
+    { "id": "4", "label": "04 Vetting Advice" },
+    { "id": "5", "label": "05 Investigation Form Details" }
+  ],
+  "routes": [
+    {
+      "path": "/stage-2/investigation/:step",
+      "stageId": 2,
+      "subItemId": "2.1",
+      "kind": "investigation",
+      "sidebarPath": "/stage-2/investigation/1",
+      "defaultInvestigationStep": 1
+    },
+    {
+      "path": "/stage-2/investigation",
+      "stageId": 2,
+      "subItemId": "2.1",
+      "kind": "investigationRedirect",
+      "sidebarPath": "/stage-2/investigation/1",
+      "defaultInvestigationStep": 1
+    },
+    {
+      "path": "/stage-2/ca-comments",
+      "stageId": 2,
+      "subItemId": "2.2",
+      "kind": "generic",
+      "sidebarPath": "/stage-2/ca-comments",
+      "title": "CA Comments",
+      "subtitle": "Capture comments from the Competent Authority for this vigilance matter."
+    },
+    {
+      "path": "/stage-2/iac",
+      "stageId": 2,
+      "subItemId": "2.3",
+      "kind": "generic",
+      "sidebarPath": "/stage-2/iac",
+      "title": "IAC",
+      "subtitle": "Internal Advisory Committee workflow and records."
+    },
+    {
+      "path": "/stage-2/fsp",
+      "stageId": 2,
+      "subItemId": "2.4",
+      "kind": "generic",
+      "sidebarPath": "/stage-2/fsp",
+      "title": "FSP",
+      "subtitle": "Final settlement / further process documentation."
+    },
+    {
+      "path": "/stage-3/aoc",
+      "stageId": 3,
+      "subItemId": "3.1",
+      "kind": "generic",
+      "sidebarPath": "/stage-3/aoc",
+      "title": "AOC",
+      "subtitle": "Advice of Competent Authority — register and track outcomes."
+    },
+    {
+      "path": "/stage-3/enquiry",
+      "stageId": 3,
+      "subItemId": "3.2",
+      "kind": "generic",
+      "sidebarPath": "/stage-3/enquiry",
+      "title": "Enquiry",
+      "subtitle": "Formal enquiry proceedings and findings."
+    },
+    {
+      "path": "/stage-3/ssp",
+      "stageId": 3,
+      "subItemId": "3.3",
+      "kind": "generic",
+      "sidebarPath": "/stage-3/ssp",
+      "title": "SSP",
+      "subtitle": "Staff / systemic penalty recommendations."
+    },
+    {
+      "path": "/stage-3/penalty",
+      "stageId": 3,
+      "subItemId": "3.4",
+      "kind": "generic",
+      "sidebarPath": "/stage-3/penalty",
+      "title": "Penalty",
+      "subtitle": "Penalty imposition and compliance tracking."
+    },
+    {
+      "path": "/stage-4/abbff",
+      "stageId": 4,
+      "subItemId": "4.1",
+      "kind": "generic",
+      "sidebarPath": "/stage-4/abbff",
+      "title": "ABBFF",
+      "subtitle": "ABBFF module — attach forms and approvals as per circular."
+    },
+    {
+      "path": "/stage-5/appeal",
+      "stageId": 5,
+      "subItemId": "5.1",
+      "kind": "generic",
+      "sidebarPath": "/stage-5/appeal",
+      "title": "Appeal",
+      "subtitle": "Appeal filing, grounds, and appellate authority remarks."
+    },
+    {
+      "path": "/stage-5/review",
+      "stageId": 5,
+      "subItemId": "5.2",
+      "kind": "generic",
+      "sidebarPath": "/stage-5/review",
+      "title": "Review",
+      "subtitle": "Periodic review and closure checklist."
+    }
+  ]
+}
