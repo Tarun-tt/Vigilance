@@ -1,13 +1,42 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BOI</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#005DAA" />
+    <title>Approval Form Component Demo</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        /* padding: 20px; */
+        background-color: #f5f7fa;
+        font-family: "Source Sans 3", sans-serif;
+      }
+
+      h1 {
+        color: #005daa;
+        text-align: center;
+      }
+      .info {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        /* border-left: 4px solid #005daa; */
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div class="demo-container">
+      <!-- Web Component will be mounted here -->
+      <approval-form route="/approval"></approval-form>
+    </div>
+
+    <!-- Import the built component -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
