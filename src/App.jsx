@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastProvider } from "./components/common/ToastContext";
 import Layout from "./components/layout/Layout";
-import ApprovalPage from "./pages/Approval/ApprovalPage";
+import VettingPage from "./pages/Vetting/VettingPage";
 
 function App({ route = "/" }) {
   return (
@@ -9,7 +9,7 @@ function App({ route = "/" }) {
       <Layout>
         <Routes>
           <Route path="/" element={<Navigate to={route} replace />} />
-          <Route path="/approval" element={<ApprovalPage />} />
+          <Route path="/vetting" element={<VettingPage />} />
           <Route path="*" element={<Navigate to={route} replace />} />
         </Routes>
       </Layout>
