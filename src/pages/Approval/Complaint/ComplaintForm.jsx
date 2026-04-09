@@ -470,35 +470,97 @@ export function ComplaintForm({
     );
   };
 
-  const renderRow = (fields) => {
+  // const renderRow = (fields) => {
+  //   const rows = [];
+  //   for (let i = 0; i < fields.length; i += 3) {
+  //     const rowFields = fields.slice(i, i + 3);
+  //     const rendered = rowFields
+  //       .map((f, idx) => {
+  //         const r = renderField(f);
+  //         return r ? (
+  //           <Box key={idx} sx={{ flex: 1 }}>
+  //             {r}
+  //           </Box>
+  //         ) : null;
+  //       })
+  //       .filter(Boolean);
+  //     if (rendered.length)
+  //       rows.push(
+  //         <Box key={`row-${i}`} sx={{ display: "flex", gap: 2, mb: 2 }}>
+  //           {rendered}
+  //           {Array(3 - rendered.length)
+  //             .fill()
+  //             .map((_, idx) => (
+  //               <Box key={`e-${idx}`} sx={{ flex: 1 }} />
+  //             ))}
+  //         </Box>,
+  //       );
+  //   }
+  //   return rows;
+  // };
+  // const renderRow = (fields, columns = 3) => {
+  //   const rows = [];
+  //   for (let i = 0; i < fields.length; i += columns) {
+  //     const rowFields = fields.slice(i, i + columns);
+
+  //     const rendered = rowFields
+  //       .map((f, idx) => {
+  //         const r = renderField(f);
+  //         return r ? (
+  //           <Box key={idx} sx={{ flex: 1 }}>
+  //             {r}
+  //           </Box>
+  //         ) : null;
+  //       })
+  //       .filter(Boolean);
+
+  //     if (rendered.length) {
+  //       rows.push(
+  //         <Box key={`row-${i}`} sx={{ display: "flex", gap: 2, mb: 2 }}>
+  //           {rendered}
+  //           {Array(columns - rendered.length)
+  //             .fill()
+  //             .map((_, idx) => (
+  //               <Box key={`e-${idx}`} sx={{ flex: 1 }} />
+  //             ))}
+  //         </Box>,
+  //       );
+  //     }
+  //   }
+  //   return rows;
+  // };
+  const renderRow = (fields, defaultColumns = 3) => {
+    // Filter visible fields first (important for condition-based rendering)
+    const visibleFields = fields.filter(
+      (f) => !f.condition || f.condition(values),
+    );
+
     const rows = [];
-    for (let i = 0; i < fields.length; i += 3) {
-      const rowFields = fields.slice(i, i + 3);
-      const rendered = rowFields
-        .map((f, idx) => {
-          const r = renderField(f);
-          return r ? (
+    let i = 0;
+
+    while (i < visibleFields.length) {
+      const remaining = visibleFields.length - i;
+
+      // 👇 dynamic column logic
+      let columns = remaining === 1 ? 1 : remaining === 2 ? 2 : defaultColumns;
+
+      const rowFields = visibleFields.slice(i, i + columns);
+
+      rows.push(
+        <Box key={`row-${i}`} sx={{ display: "flex", gap: 2, mb: 2 }}>
+          {rowFields.map((f, idx) => (
             <Box key={idx} sx={{ flex: 1 }}>
-              {r}
+              {renderField(f)}
             </Box>
-          ) : null;
-        })
-        .filter(Boolean);
-      if (rendered.length)
-        rows.push(
-          <Box key={`row-${i}`} sx={{ display: "flex", gap: 2, mb: 2 }}>
-            {rendered}
-            {Array(3 - rendered.length)
-              .fill()
-              .map((_, idx) => (
-                <Box key={`e-${idx}`} sx={{ flex: 1 }} />
-              ))}
-          </Box>,
-        );
+          ))}
+        </Box>,
+      );
+
+      i += columns;
     }
+
     return rows;
   };
-
   const renderAgencyField = (agency, idx, field) => {
     const value = agency[field.name];
     const errorKey = `agency_${idx}_${field.name}`;
@@ -671,7 +733,7 @@ export function ComplaintForm({
                 {!readOnly && branches.length > 1 && (
                   <Button
                     size="small"
-                    variant="outlined"
+                    variant="contained"
                     color="error"
                     startIcon={<RemoveIcon />}
                     onClick={() => onRemove(actualIdx)}
@@ -886,13 +948,34 @@ export function ComplaintForm({
     const filteredFields = complaintFormConfig.agencyFields.filter(
       (f) => !f.condition || f.condition(agency),
     );
+    // const rows = [];
+    // for (let i = 0; i < filteredFields.length; i += 3) {
+    //   rows.push(
+    //     <Box key={`row-${i}`} sx={{ display: "flex", gap: 2, mb: 2 }}>
+    //       {filteredFields
+    //         .slice(i, i + 3)
+    //         .map((field, fidx) => renderAgencyField(agency, idx, field))}
+    //     </Box>,
+    //   );
+    // }
     const rows = [];
     for (let i = 0; i < filteredFields.length; i += 3) {
+      const rowFields = filteredFields.slice(i, i + 3);
+
       rows.push(
         <Box key={`row-${i}`} sx={{ display: "flex", gap: 2, mb: 2 }}>
-          {filteredFields
-            .slice(i, i + 3)
-            .map((field, fidx) => renderAgencyField(agency, idx, field))}
+          {rowFields.map((field, fidx) => (
+            <Box key={fidx} sx={{ flex: 1 }}>
+              {renderAgencyField(agency, idx, field)}
+            </Box>
+          ))}
+
+          {/* fill empty space if less than 3 fields */}
+          {Array(3 - rowFields.length)
+            .fill()
+            .map((_, idx) => (
+              <Box key={`empty-${idx}`} sx={{ flex: 1 }} />
+            ))}
         </Box>,
       );
     }
@@ -1122,7 +1205,7 @@ export function ComplaintForm({
             </RadioGroup>
           </FormControl>
         </Box>
-        <Box sx={{ flex: 1 }} />
+        {/* <Box sx={{ flex: 1 }} /> */}
       </Box>
       <Typography
         sx={{
@@ -1249,7 +1332,19 @@ export function ComplaintForm({
       >
         {complaintDetails.title}
       </Typography>
-      <Box sx={{ mb: 3 }}>{renderRow(complaintDetails.fields)}</Box>
+      {/* <Box sx={{ mb: 3 }}>{renderRow(complaintDetails.fields)}</Box> */}
+      {/* <Box sx={{ mb: 3 }}>{renderRow(complaintDetails.fields, 2)}</Box> */}
+      <Box
+        sx={{
+          border: `1px solid ${boiBorder}`,
+          borderRadius: "12px",
+          p: 2.5,
+          mb: 3,
+          bgcolor: "#fff",
+        }}
+      >
+        {renderRow(complaintDetails.fields, 2)}
+      </Box>
 
       {showFraud && (
         <>
@@ -1265,7 +1360,7 @@ export function ComplaintForm({
           >
             {fraudDetails.title}
           </Typography>
-          <Box
+          {/* <Box
             sx={{
               border: `1px solid ${boiBorder}`,
               borderRadius: "12px",
@@ -1275,6 +1370,17 @@ export function ComplaintForm({
             }}
           >
             {renderRow(fraudDetails.fields)}
+          </Box> */}
+          <Box
+            sx={{
+              border: `1px solid ${boiBorder}`,
+              borderRadius: "12px",
+              p: 2.5,
+              mb: 3,
+              bgcolor: "#fff",
+            }}
+          >
+            {renderRow(fraudDetails.fields, 3)}
           </Box>
         </>
       )}
@@ -1337,7 +1443,8 @@ export function ComplaintForm({
           bgcolor: "#fff",
         }}
       >
-        {renderRow(complaintReceived.fields)}
+        {/* {renderRow(complaintReceived.fields)} */}
+        {renderRow(complaintReceived.fields, 2)}
       </Box>
 
       {(mode === "view" || mode === "approval") && (

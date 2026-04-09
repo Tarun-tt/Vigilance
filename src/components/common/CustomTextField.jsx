@@ -33,7 +33,6 @@ const formatDate = (value) => {
   return null;
 };
 
-// Single red asterisk for required fields - NO grey asterisk
 const RequiredAsterisk = () => (
   <Typography
     component="span"
@@ -134,6 +133,7 @@ export function CustomTextField({
         label={
           <span>
             {label}
+            {/* {required && <RequiredAsterisk />} */}
             {required && <RequiredAsterisk />}
           </span>
         }
@@ -148,7 +148,7 @@ export function CustomTextField({
             placeholder: placeholder,
             error: !!error,
             helperText: helperText,
-            required: required,
+            // required: required,
             // Remove the default asterisk
             FormHelperTextProps: { sx: { display: "none" } },
           },
