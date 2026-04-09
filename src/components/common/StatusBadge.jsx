@@ -5,6 +5,7 @@ export function StatusBadge({ status }) {
   const getColor = () => {
     switch (status?.toLowerCase()) {
       case "approved":
+      case "vetted":
         return boiSuccessGreen;
       case "pending":
         return boiOrange;

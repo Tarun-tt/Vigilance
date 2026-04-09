@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { FormTabs } from "../../components/common/FormTabs";
 import { useToast } from "../../components/common/ToastContext";
-import { emptyVettingForm, mockDashboard } from "./VettingData";
+import { createEmptyVettingForm, mockDashboard } from "./VettingData";
 import { VettingTable } from "./VettingTable";
 import { VettingForm } from "./VettingForm";
 
@@ -16,8 +16,7 @@ export default function VettingPage() {
   const [mainTab, setMainTab] = useState(initialVettingTab);
   const [viewPane, setViewPane] = useState("list");
   const [formMode, setFormMode] = useState("add");
-  const [formValues, setFormValues] = useState(() => emptyVettingForm);
-  const [selectedRowId, setSelectedRowId] = useState(null);
+  const [formValues, setFormValues] = useState(createEmptyVettingForm);
 
   const patchForm = (patch) => setFormValues((prev) => ({ ...prev, ...patch }));
 
@@ -27,18 +26,17 @@ export default function VettingPage() {
       return { ...foundRow };
     }
     return {
-      ...emptyVettingForm,
+      ...createEmptyVettingForm(),
       refNo: row.referenceNumber,
+      referenceNumber: row.referenceNumber,
       typeOfComplaint: row.typeOfComplaint,
       sourceOfComplaint: row.sourceOfComplaint,
-      date: new Date().toISOString().slice(0, 10),
     };
   };
 
   const openViewDocument = (row, e) => {
     if (e) e.stopPropagation();
     setFormValues(formFromRow(row));
-    setSelectedRowId(row.id);
     setFormMode("view");
     setViewPane("document");
     setMainTab("view");
@@ -47,14 +45,12 @@ export default function VettingPage() {
   const openUpdate = (row, e) => {
     if (e) e.stopPropagation();
     setFormValues(formFromRow(row));
-    setSelectedRowId(row.id);
     setFormMode("update");
     setMainTab("add");
   };
 
   const openAdd = () => {
-    setFormValues(emptyVettingForm);
-    setSelectedRowId(null);
+    setFormValues(createEmptyVettingForm());
     setFormMode("add");
     setMainTab("add");
   };
@@ -65,8 +61,7 @@ export default function VettingPage() {
       setViewPane("list");
     } else {
       setFormMode("add");
-      setFormValues(emptyVettingForm);
-      setSelectedRowId(null);
+      setFormValues(createEmptyVettingForm());
     }
   };
 
@@ -89,20 +84,6 @@ export default function VettingPage() {
     console.log("Complete Form Data:", JSON.stringify(formValues, null, 2));
     success("Final submitted successfully");
   };
-
-  const handlePrint = () => {
-    console.log("=== PRINT REQUEST ===");
-    console.log("Printing Form:", formValues.refNo);
-    window.print();
-    success("Print dialog opened");
-  };
-
-  const docTitle =
-    formMode === "add"
-      ? "Add Vetting Forms"
-      : formMode === "update"
-        ? "Update Vetting Form"
-        : "View Vetting Forms";
 
   const VETTING_TABS = [
     { value: "view", label: "View Vetting Forms" },
@@ -138,8 +119,6 @@ export default function VettingPage() {
             mode="view"
             values={formValues}
             onChange={patchForm}
-            title={docTitle}
-            onPrint={handlePrint}
             onFinalSubmit={handleFinalSubmit}
           />
         </Box>
@@ -150,7 +129,6 @@ export default function VettingPage() {
           mode={formMode === "update" ? "update" : "add"}
           values={formValues}
           onChange={patchForm}
-          title={docTitle}
           onSaveDraft={handleSaveDraft}
           onSubmitVetting={handleSubmitVetting}
         />

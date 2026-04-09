@@ -1,9 +1,15 @@
+const formatToday = () =>
+  new Intl.DateTimeFormat("en-GB").format(new Date()).replace(/\//g, ".");
+
+const createRows = (count, factory) =>
+  Array.from({ length: count }, (_, index) => factory(index));
+
 export const STATUS_OPTS = [
   "All Statuses",
-  "Approved",
+  "Vetted",
   "Draft",
   "Pending",
-  "Not approved",
+  "Not vetted",
 ];
 
 export const TYPE_OPTS = [
@@ -26,378 +32,387 @@ export const SOURCE_OPTS = [
   "Whistleblower",
 ];
 
+export const VETTING_CHECKLIST_SECTIONS = [
+  {
+    number: "1.",
+    items: [
+      {
+        field: "prescribedFormat",
+        label: "Whether report is in prescribed format",
+      },
+    ],
+  },
+  {
+    number: "2.",
+    title: "Coverage",
+    items: [
+      { field: "coverageListedScope", label: "Coverage of listed scope" },
+      {
+        field: "coverageConcernedPersons",
+        label: 'All concerned persons are contacted "in person"',
+      },
+      {
+        field: "coverageStatementsObtained",
+        label:
+          "Statement of staff members and customer / borrower / complainant is obtained",
+      },
+      {
+        field: "coverageOfficialsRole",
+        label:
+          "Examination of role of all officials (period wise) in Pre Sanction / Recommendation / Sanction / Disbursement / Monitoring stage is brought out",
+      },
+      {
+        field: "coverageExternalAgencyRole",
+        label:
+          "Examination of role of External agency such as Due-diligence / Legal / Valuator etc",
+      },
+      {
+        field: "coverageSanctionCommitteeRole",
+        label:
+          "Role of all members of Sanctioning Committee i.e. SZLCC and ZLCC / NBGLCC, SMECC / RBC (including committee head) is brought out",
+      },
+      {
+        field: "coverageCpaRbia",
+        label: "Examination of role of CPA officials involved in RBIA",
+      },
+      {
+        field: "coverageCpaPsr",
+        label: "Examination of role of CPA officials involved in PSRs",
+      },
+      {
+        field: "coverageCpaInspections",
+        label:
+          "Examination of role of CPA officials involved in Credit / Other Inspections",
+      },
+      {
+        field: "coverageAuditFindings",
+        label:
+          "Findings / Scrutiny of Concurrent Audit / Statutory Audit / Legal Audit",
+      },
+      {
+        field: "coverageControllingOfficeRole",
+        label: "Examination of role of Controlling Office / Authority",
+      },
+      {
+        field: "coverageBankAccounts",
+        label: "Scrutiny of Bank accounts of erring officials has been done?",
+      },
+    ],
+  },
+  {
+    number: "3.",
+    title: "Attribution of lapses",
+    items: [
+      {
+        field: "attributionDocumentaryProof",
+        label:
+          "Lapses reported in the report are backed by documentary proof.",
+      },
+      {
+        field: "attributionOfficialWise",
+        label:
+          "Official wise attribution of lapses is brought out in report supported by evidences",
+      },
+      {
+        field: "attributionVersionCalled",
+        label:
+          "Versions of erring official are called and observation of IO provided",
+      },
+      {
+        field: "attributionProperlyAttributed",
+        label:
+          "Lapses are properly attributed considering official's role, capacity / designation, tenure and considering version of official, if no provide details.",
+      },
+    ],
+  },
+  {
+    number: "4.",
+    items: [
+      {
+        field: "officialsSuperannuatingNext12Months",
+        label:
+          "Officials, superannuating in next 12 months and / or Case of expiring of Cause of Action is brought out in report",
+      },
+    ],
+  },
+  {
+    number: "5.",
+    items: [
+      {
+        field: "evidencesEnclosed",
+        label: "Evidences / documents are enclosed with report.",
+      },
+    ],
+  },
+  {
+    number: "6.",
+    items: [
+      {
+        field: "delayReasonMentioned",
+        label: "Reason for delay in submission of report is mentioned.",
+      },
+    ],
+  },
+];
+
+const createChecklistResponses = () =>
+  VETTING_CHECKLIST_SECTIONS.flatMap((section) => section.items).reduce(
+    (acc, item) => {
+      acc[item.field] = "";
+      return acc;
+    },
+    {},
+  );
+
+const createAttributableOfficials = () =>
+  createRows(4, () => ({
+    namePfDesignation: "",
+    stage: "",
+    lapses: "",
+  }));
+
+const createAssetLiabilityRows = () =>
+  createRows(3, () => ({
+    namePfDesignation: "",
+    statementDetails: "",
+    observations: "",
+  }));
+
+const createSuperannuatingOfficials = () =>
+  createRows(5, () => ({
+    namePfNo: "",
+    scaleDesignation: "",
+    roleInCase: "",
+    dateOfSuperannuation: "",
+  }));
+
+const createSuspendedOfficials = () =>
+  createRows(1, () => ({
+    namePfNo: "",
+    scaleDesignation: "",
+    dateOfSuspension: "",
+  }));
+
+export function createEmptyVettingForm() {
+  return {
+    refNo: "",
+    referenceNumber: "",
+    date: formatToday(),
+    status: "Draft",
+    typeOfComplaint: "",
+    sourceOfComplaint: "",
+    branchZone: "",
+    caseNo: "",
+    accountIncident: "",
+    dateOfIncident: "",
+    dateOfInvestigationOrder: "",
+    dateOfAllotmentInvestigation: "",
+    dateOfSubmissionReport: "",
+    presentReferenceMemoNo: "",
+    presentReferenceDate: "",
+    attributableOfficials: createAttributableOfficials(),
+    assetLiabilityRows: createAssetLiabilityRows(),
+    superannuatingOfficials: createSuperannuatingOfficials(),
+    suspendedOfficials: createSuspendedOfficials(),
+    checklistResponses: createChecklistResponses(),
+    deskOfficerName: "",
+    deskOfficerDesignation: "",
+    committeeObservation: "",
+    reportPerusedDate: "",
+    reportPerusedAccount: "",
+    reportSubmittedBy: "",
+    committeeDate: "",
+    isFormVetted: "",
+    dateOfVetting: "",
+    attachDocument: null,
+  };
+}
+
+const buildVettingRow = (overrides = {}) => ({
+  ...createEmptyVettingForm(),
+  ...overrides,
+});
+
 export const mockDashboard = {
   vettingList: [
-    {
+    buildVettingRow({
       id: "1",
-      referenceNumber: "HO/VIG/2024/001",
+      referenceNumber: "HO/VIG/2023-24/017",
+      refNo: "HO/VIG/Case/2023-24/017",
+      date: "07.09.2023",
       typeOfComplaint: "Fraud",
       sourceOfComplaint: "Internal",
       status: "Pending",
-      refNo: "HO/VIG/2024/001",
-      date: "2024-01-15",
-      nameOfOfficial: "John Doe",
-      designation: "Branch Manager",
-      address: "123 Main Street",
-      state: "Maharashtra",
-      email: "john.doe@bankofindia.co.in",
-      mobile: "9876543210",
-      natureOfComplaint: "Financial irregularities",
-      allegationBrief: "Misappropriation of funds",
-      amountInvolved: "500000",
-      probableLoss: "250000",
-      isFormApproved: "Pending",
-      dateOfVetting: "",
-      attachDocument: null,
-      // New fields for expanded form
-      nameOfAccount: "ABC Corporation",
-      dateOfComplaint: "2024-01-10",
-      letterReferenceNo: "REF/LET/2024/001",
-      dateOfDeclarationFraud: "",
-      fraudComplaintResignationNo: "FCR/2024/001",
-      dateOfReceipt: "2024-01-12",
-      complainantName: "John Doe",
-      pin: "400001",
-      kycLetter1: "Sent on 2024-01-05",
-      kycLetter2: "Sent on 2024-01-12",
-      replyReceived: "Received on 2024-01-20",
-      kycEstablishment: "Verified",
-      kycNo: "KYC123456",
-      branchOffice: "Main Branch Mumbai",
-      zoneNbg: "West Zone",
-      officialInvolvement: "Yes",
-      allegationDetails: "Misappropriation of funds from customer accounts",
-      modusOperandi: "Created fake accounts and transferred funds",
-      officerName: "Rajesh Kumar",
-      officerPf: "PF12345",
-      presentPosting: "Mumbai Regional Office",
-      proposedCompletionDate: "2024-03-15",
-      deptObservation: "Need thorough investigation",
-      cvoComments: "Approve with additional documentation",
-      scopeRows: [
-        { sno: 1, particulars: "Review financial records" },
-        { sno: 2, particulars: "Interview staff members" },
-        { sno: 3, particulars: "Audit transaction logs" },
+      branchZone: "Mumbai Zone",
+      caseNo: "VIG/IR/017",
+      accountIncident: "ABC Industries Ltd.",
+      dateOfIncident: "06.06.2023",
+      dateOfInvestigationOrder: "12.06.2023",
+      dateOfAllotmentInvestigation: "15.06.2023",
+      dateOfSubmissionReport: "07.09.2023",
+      presentReferenceMemoNo: "17",
+      presentReferenceDate: "07-09-2023",
+      attributableOfficials: [
+        {
+          namePfDesignation: "R. Kumar / PF12345 / Branch Manager",
+          stage: "Sanction",
+          lapses: "Deviation in sanction and monitoring controls",
+        },
+        {
+          namePfDesignation: "S. Nair / PF54321 / Senior Manager",
+          stage: "Post disbursement",
+          lapses: "Irregular review of stock statements and inspection",
+        },
+        ...createAttributableOfficials().slice(2),
       ],
-    },
-    {
+      assetLiabilityRows: [
+        {
+          namePfDesignation: "R. Kumar / PF12345 / Branch Manager",
+          statementDetails: "Statement received on 04.09.2023",
+          observations: "No material mismatch observed",
+        },
+        {
+          namePfDesignation: "S. Nair / PF54321 / Senior Manager",
+          statementDetails: "Statement awaited from official",
+          observations: "Follow-up required before closure",
+        },
+        ...createAssetLiabilityRows().slice(2),
+      ],
+      superannuatingOfficials: [
+        {
+          namePfNo: "A. Mehta / PF88441",
+          scaleDesignation: "SMGS-IV / Chief Manager",
+          roleInCase: "Sanctioning authority",
+          dateOfSuperannuation: "31.03.2024",
+        },
+        {
+          namePfNo: "V. Rao / PF77219",
+          scaleDesignation: "MMGS-III / Senior Manager",
+          roleInCase: "Monitoring",
+          dateOfSuperannuation: "30.06.2024",
+        },
+        ...createSuperannuatingOfficials().slice(2),
+      ],
+      suspendedOfficials: [
+        {
+          namePfNo: "P. Roy / PF90211",
+          scaleDesignation: "MMGS-II / Manager",
+          dateOfSuspension: "22.07.2023",
+        },
+      ],
+      checklistResponses: {
+        ...createChecklistResponses(),
+        prescribedFormat: "Yes",
+        coverageListedScope: "Yes",
+        coverageConcernedPersons: "Yes",
+        coverageStatementsObtained: "Yes",
+        coverageOfficialsRole: "Yes",
+        coverageExternalAgencyRole: "NA",
+        coverageSanctionCommitteeRole: "Yes",
+        coverageCpaRbia: "Yes",
+        coverageCpaPsr: "Yes",
+        coverageCpaInspections: "No",
+        coverageAuditFindings: "Yes",
+        coverageControllingOfficeRole: "Yes",
+        coverageBankAccounts: "No",
+        attributionDocumentaryProof: "Yes",
+        attributionOfficialWise: "Yes",
+        attributionVersionCalled: "Yes",
+        attributionProperlyAttributed: "Yes",
+        officialsSuperannuatingNext12Months: "Yes",
+        evidencesEnclosed: "Yes",
+        delayReasonMentioned: "Yes",
+      },
+      deskOfficerName: "Rahul Sharma",
+      deskOfficerDesignation: "Senior Manager",
+      committeeObservation:
+        "Report reviewed. Attribution of lapses and supporting records may be placed before the competent authority.",
+      reportPerusedDate: "07.09.2023",
+      reportPerusedAccount: "ABC Industries Ltd.",
+      reportSubmittedBy: "Senior Manager, Vigilance Desk",
+      committeeDate: "18-09-2023",
+      isFormVetted: "Pending",
+    }),
+    buildVettingRow({
       id: "2",
-      referenceNumber: "HO/VIG/2024/002",
+      referenceNumber: "HO/VIG/2024-25/006",
+      refNo: "HO/VIG/Case/2024-25/006",
+      date: "18.01.2024",
       typeOfComplaint: "PIDPI",
       sourceOfComplaint: "Customer",
-      status: "Approved",
-      refNo: "HO/VIG/2024/002",
-      date: "2024-01-10",
-      nameOfOfficial: "Jane Smith",
-      designation: "Assistant Manager",
-      address: "456 Park Avenue",
-      state: "Gujarat",
-      email: "jane.smith@bankofindia.co.in",
-      mobile: "9876543211",
-      natureOfComplaint: "Harassment",
-      allegationBrief: "Verbal abuse by staff",
-      amountInvolved: "0",
-      probableLoss: "0",
-      isFormApproved: "Yes",
-      dateOfVetting: "2024-01-20",
-      attachDocument: null,
-      nameOfAccount: "XYZ Enterprises",
-      dateOfComplaint: "2024-01-05",
-      letterReferenceNo: "REF/LET/2024/002",
-      dateOfDeclarationFraud: "",
-      fraudComplaintResignationNo: "FCR/2024/002",
-      dateOfReceipt: "2024-01-07",
-      complainantName: "Jane Smith",
-      pin: "380001",
-      kycLetter1: "Sent on 2024-01-06",
-      kycLetter2: "Sent on 2024-01-13",
-      replyReceived: "Received on 2024-01-18",
-      kycEstablishment: "Verified",
-      kycNo: "KYC789012",
-      branchOffice: "Ahmedabad Branch",
-      zoneNbg: "West Zone",
-      officialInvolvement: "Yes",
-      allegationDetails: "Harassment of customer for loan recovery",
-      modusOperandi: "Used abusive language and threats",
-      officerName: "Priya Sharma",
-      officerPf: "PF67890",
-      presentPosting: "Ahmedabad Zonal Office",
-      proposedCompletionDate: "2024-02-28",
-      deptObservation: "Customer complaint verified",
-      cvoComments: "Take disciplinary action",
-      scopeRows: [
-        { sno: 1, particulars: "Review CCTV footage" },
-        { sno: 2, particulars: "Customer statement recording" },
+      status: "Vetted",
+      branchZone: "Ahmedabad Zone",
+      caseNo: "VIG/IR/006",
+      accountIncident: "XYZ Exports",
+      dateOfIncident: "04.01.2024",
+      dateOfInvestigationOrder: "09.01.2024",
+      dateOfAllotmentInvestigation: "11.01.2024",
+      dateOfSubmissionReport: "18.01.2024",
+      presentReferenceMemoNo: "06",
+      presentReferenceDate: "18-01-2024",
+      attributableOfficials: [
+        {
+          namePfDesignation: "P. Sharma / PF67890 / Assistant Manager",
+          stage: "Recovery",
+          lapses: "Improper conduct with complainant during recovery visit",
+        },
+        ...createAttributableOfficials().slice(1),
       ],
-    },
-    {
+      assetLiabilityRows: createAssetLiabilityRows(),
+      superannuatingOfficials: createSuperannuatingOfficials(),
+      suspendedOfficials: createSuspendedOfficials(),
+      checklistResponses: {
+        ...createChecklistResponses(),
+        prescribedFormat: "Yes",
+        coverageListedScope: "Yes",
+        coverageConcernedPersons: "Yes",
+        coverageStatementsObtained: "Yes",
+        coverageOfficialsRole: "Yes",
+        coverageExternalAgencyRole: "NA",
+        coverageSanctionCommitteeRole: "NA",
+        coverageCpaRbia: "NA",
+        coverageCpaPsr: "NA",
+        coverageCpaInspections: "NA",
+        coverageAuditFindings: "No",
+        coverageControllingOfficeRole: "Yes",
+        coverageBankAccounts: "NA",
+        attributionDocumentaryProof: "Yes",
+        attributionOfficialWise: "Yes",
+        attributionVersionCalled: "Yes",
+        attributionProperlyAttributed: "Yes",
+        officialsSuperannuatingNext12Months: "No",
+        evidencesEnclosed: "Yes",
+        delayReasonMentioned: "Yes",
+      },
+      deskOfficerName: "Priya Desai",
+      deskOfficerDesignation: "Manager",
+      committeeObservation:
+        "Investigation report is in order and may be processed further.",
+      reportPerusedDate: "18.01.2024",
+      reportPerusedAccount: "XYZ Exports",
+      reportSubmittedBy: "Manager, Vigilance Desk",
+      committeeDate: "22-01-2024",
+      isFormVetted: "Yes",
+      dateOfVetting: "22.01.2024",
+    }),
+    buildVettingRow({
       id: "3",
-      referenceNumber: "HO/VIG/2024/003",
+      referenceNumber: "HO/VIG/2024-25/014",
+      refNo: "HO/VIG/Case/2024-25/014",
+      date: "05.02.2024",
       typeOfComplaint: "CVC",
       sourceOfComplaint: "RBI",
       status: "Draft",
-      refNo: "HO/VIG/2024/003",
-      date: "2024-01-18",
-      nameOfOfficial: "Robert Johnson",
-      designation: "Chief Manager",
-      address: "789 Business Park",
-      state: "Delhi",
-      email: "robert.johnson@bankofindia.co.in",
-      mobile: "9876543212",
-      natureOfComplaint: "Non-compliance",
-      allegationBrief: "RBI guidelines violation",
-      amountInvolved: "1000000",
-      probableLoss: "500000",
-      isFormApproved: "No",
-      dateOfVetting: "",
-      attachDocument: null,
-      nameOfAccount: "LMN Industries",
-      dateOfComplaint: "2024-01-15",
-      letterReferenceNo: "REF/LET/2024/003",
-      dateOfDeclarationFraud: "2024-01-20",
-      fraudComplaintResignationNo: "FCR/2024/003",
-      dateOfReceipt: "2024-01-17",
-      complainantName: "Robert Johnson",
-      pin: "110001",
-      kycLetter1: "Sent on 2024-01-10",
-      kycLetter2: "Sent on 2024-01-17",
-      replyReceived: "Pending",
-      kycEstablishment: "Under Review",
-      kycNo: "KYC345678",
-      branchOffice: "Delhi Main Branch",
-      zoneNbg: "North Zone",
-      officialInvolvement: "Yes",
-      allegationDetails: "Violation of RBI lending guidelines",
-      modusOperandi: "Sanctioned loans without proper documentation",
-      officerName: "Vikram Singh",
-      officerPf: "PF11223",
-      presentPosting: "Delhi Regional Office",
-      proposedCompletionDate: "2024-04-30",
-      deptObservation: "Serious compliance issue",
-      cvoComments: "Detailed investigation required",
-      scopeRows: [{ sno: 1, particulars: "Audit documentation" }],
-    },
-  ],
-};
-
-export const emptyVettingForm = {
-  // Reference section
-  refNo: "",
-  date: new Date().toISOString().slice(0, 10),
-  nameOfAccount: "",
-  dateOfComplaint: "",
-  typeOfComplaint: "",
-  sourceOfComplaint: "",
-  letterReferenceNo: "",
-  dateOfDeclarationFraud: "",
-  fraudComplaintResignationNo: "",
-  dateOfReceipt: "",
-
-  // Complainant Details
-  complainantName: "",
-  address: "",
-  email: "",
-  mobile: "",
-  amountInvolved: "",
-  pin: "",
-
-  // KYC Details
-  kycLetter1: "",
-  kycLetter2: "",
-  replyReceived: "",
-  kycEstablishment: "",
-  kycNo: "",
-
-  // Allegation Details
-  branchOffice: "",
-  zoneNbg: "",
-  officialInvolvement: "",
-  allegationDetails: "",
-  modusOperandi: "",
-
-  // Official Details (for backward compatibility)
-  nameOfOfficial: "",
-  designation: "",
-  state: "",
-  natureOfComplaint: "",
-  allegationBrief: "",
-  probableLoss: "",
-
-  // Allotment Details
-  officerName: "",
-  officerPf: "",
-  presentPosting: "",
-  proposedCompletionDate: "",
-
-  // Comments
-  deptObservation: "",
-  cvoComments: "",
-
-  // Vetting Status
-  isFormApproved: "",
-  dateOfVetting: "",
-  attachDocument: null,
-
-  // Scope Rows
-  scopeRows: [
-    { sno: 1, particulars: "" },
-    { sno: 2, particulars: "" },
-    { sno: 3, particulars: "" },
-  ],
-};
-
-export const vettingFormConfig = {
-  sections: [
-    {
-      id: "reference",
-      title: "1. Reference:",
-      type: "table",
-      fields: [
-        {
-          label: "Name of Account/Complainant",
-          name: "nameOfAccount",
-          type: "text",
-        },
-        {
-          label: "Date of Complaint/NPA",
-          name: "dateOfComplaint",
-          type: "date",
-        },
-        { label: "Type of complaint", name: "typeOfComplaint", type: "text" },
-        {
-          label: "Source/received through",
-          name: "sourceOfComplaint",
-          type: "text",
-        },
-        {
-          label: "Letter reference No & date",
-          name: "letterReferenceNo",
-          type: "text",
-        },
-        {
-          label: "Date of declaration of Fraud",
-          name: "dateOfDeclarationFraud",
-          type: "date",
-        },
-        {
-          label: "Fraud/Complaint Resignation No.",
-          name: "fraudComplaintResignationNo",
-          type: "text",
-        },
-      ],
-    },
-    {
-      id: "complainantDetails",
-      title: "2. Details of complainant / Account",
-      type: "complex-table",
-      // Layout is handled in renderComplexTableSection
-    },
-    {
-      id: "kyc",
-      title: "3. Establishment of KYC",
-      type: "table",
-      fields: [
-        {
-          label: "1st Letter sent to Complaint ",
-          name: "kycLetter1",
-          type: "text",
-        },
-        {
-          label: "2nd Letter sent to Complaint",
-          name: "kycLetter2",
-          type: "text",
-        },
-        {
-          label: "Date of receipt of reply ",
-          name: "replyReceived",
-          type: "date",
-        },
-        {
-          label: "Whether ownership of KYC established ",
-          name: "kycEstablishment",
-          type: "text",
-        },
-        { label: "KYC No (OVD details)", name: "kycNo", type: "text" },
-      ],
-    },
-    {
-      id: "allegation",
-      title: "4. Allegation / Modus operandi",
-      type: "complex-table",
-      layout: [
-        { label: "Branch/Office :", name: "branchOffice", type: "text" },
-        { label: "Zone/NBG :", name: "zoneNbg", type: "text" },
-        {
-          label:
-            "Whether involvement of Bank's official reported in Fraud? / Whether complaint made against Bank's official",
-          name: "officialInvolvement",
-          type: "text",
-        },
-        {
-          label: "If yes, Please provide details",
-          name: "allegationDetails",
-          type: "textarea",
-          multiline: true,
-          colSpan: 3,
-        },
-        {
-          label: "Allegation made/ Modus operandi",
-          name: "modusOperandi",
-          type: "textarea",
-          multiline: true,
-          colSpan: 3,
-        },
-      ],
-    },
-    {
-      id: "scope",
-      title: "5. Scope of Investigation",
-      type: "dynamic-table",
-      fields: [
-        { label: "S.No", name: "sno", type: "number", width: 80 },
-        {
-          label: "Particulars",
-          name: "particulars",
-          type: "textarea",
-          width: "auto",
-        },
-      ],
-    },
-    {
-      id: "allotment",
-      title: "6. Allotment and timeline of investigation",
-      type: "complex-table",
-      layout: [
-        {
-          label: "Name of Officer & PF No",
-          name: "officerDetails",
-          type: "compound",
-          fields: [
-            { name: "officerName", placeholder: "Name", type: "text" },
-            { name: "officerPf", placeholder: "PF No", type: "text" },
-          ],
-        },
-        { label: "Designation", name: "designation", type: "text" },
-        { label: "Present Posting", name: "presentPosting", type: "text" },
-        {
-          label: "Proposed date for completion of investigation",
-          name: "proposedCompletionDate",
-          type: "date",
-        },
-      ],
-    },
-    {
-      id: "deptObservation",
-      title: "7. Department Observation",
-      type: "textarea",
-      name: "deptObservation",
-    },
-    {
-      id: "cvoComments",
-      title:
-        "8. Comments / advise / instruction of the Chief Vigilance Officer",
-      type: "textarea",
-      name: "cvoComments",
-    },
+      branchZone: "Delhi Zone",
+      caseNo: "VIG/IR/014",
+      accountIncident: "LMN Infrastructure",
+      dateOfIncident: "25.01.2024",
+      dateOfInvestigationOrder: "28.01.2024",
+      dateOfAllotmentInvestigation: "30.01.2024",
+      dateOfSubmissionReport: "",
+      presentReferenceMemoNo: "",
+      presentReferenceDate: "",
+      isFormVetted: "No",
+    }),
   ],
 };
