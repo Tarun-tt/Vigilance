@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import { DataTable, FilterBar, StatusBadge } from "../../components/common";
-import { boiOrange, boiBlue } from "../../theme/theme";
+import { commonOrange, commonBlue } from "../../theme/theme";
 import {
   STATUS_OPTS,
   TYPE_OPTS,
@@ -33,7 +33,7 @@ const columns = [
         <Button
           size="small"
           variant="text"
-          sx={{ color: boiBlue, fontWeight: 600 }}
+          sx={{ color: commonBlue, fontWeight: 600 }}
           onClick={(e) => onView(r, e)}
         >
           View
@@ -98,7 +98,7 @@ export function VettingTable({ onAdd, onView, onUpdate }) {
   return (
     <Box>
       <Typography
-        sx={{ fontWeight: 700, mb: 2, color: boiBlue, fontSize: "1.15rem" }}
+        sx={{ fontWeight: 700, mb: 2, color: commonBlue, fontSize: "1.15rem" }}
       >
         View Vetting Forms
       </Typography>
@@ -119,7 +119,7 @@ export function VettingTable({ onAdd, onView, onUpdate }) {
         }}
       >
         <Box
-          sx={{ width: 4, height: 28, bgcolor: boiOrange, borderRadius: 1 }}
+          sx={{ width: 4, height: 28, bgcolor: commonOrange, borderRadius: 1 }}
         />
         <Typography
           variant="h6"

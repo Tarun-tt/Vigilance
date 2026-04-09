@@ -1,18 +1,18 @@
 import Chip from "@mui/material/Chip";
-import { boiBlue, boiOrange, boiSuccessGreen } from "../../theme/theme";
+import { commonBlue, commonOrange, commonSuccessGreen } from "../../theme/theme";
 
 export function StatusBadge({ status }) {
   const getColor = () => {
     switch (status?.toLowerCase()) {
       case "approved":
       case "vetted":
-        return boiSuccessGreen;
+        return commonSuccessGreen;
       case "pending":
-        return boiOrange;
+        return commonOrange;
       case "draft":
         return "#6c757d";
       default:
-        return boiBlue;
+        return commonBlue;
     }
   };
 

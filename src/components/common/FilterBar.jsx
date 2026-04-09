@@ -7,16 +7,16 @@ import { useState } from "react";
 import { CustomAutocomplete } from "./CustomAutocomplete";
 import { CustomTextField } from "./CustomTextField";
 import {
-  boiBlue,
-  boiFilterBg,
-  boiBorder,
-  boiInputSoftBg,
+  commonBlue,
+  commonFilterBg,
+  commonBorder,
+  commonInputSoftBg,
 } from "../../theme/theme";
 
 const labelProps = {
   shrink: true,
   sx: {
-    color: boiBlue,
+    color: commonBlue,
     fontWeight: 700,
     fontSize: 11,
     letterSpacing: "0.06em",
@@ -27,9 +27,9 @@ const labelProps = {
 
 const fieldInputSx = {
   "& .MuiOutlinedInput-root": {
-    bgcolor: boiInputSoftBg,
+    bgcolor: commonInputSoftBg,
     borderRadius: "10px",
-    "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: boiBlue },
+    "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: commonBlue },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderWidth: "1px" },
   },
 };
@@ -67,10 +67,10 @@ export function FilterBar({
         flexWrap: "wrap",
         gap: 2,
         alignItems: "flex-end",
-        bgcolor: boiFilterBg,
+        bgcolor: commonFilterBg,
         p: 2.25,
         borderRadius: "12px",
-        border: `1px solid ${boiBorder}`,
+        border: `1px solid ${commonBorder}`,
       }}
     >
       <Box sx={{ minWidth: 172, flex: "1 1 150px" }}>
@@ -96,7 +96,7 @@ export function FilterBar({
               <InputAdornment position="end">
                 <SearchIcon
                   fontSize="small"
-                  sx={{ color: boiBlue, opacity: 0.7 }}
+                  sx={{ color: commonBlue, opacity: 0.7 }}
                 />
               </InputAdornment>
             ),

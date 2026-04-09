@@ -16,7 +16,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
 import { CustomAutocomplete, CustomTextField } from "../../components/common";
 import { VETTING_CHECKLIST_SECTIONS } from "./VettingData";
-import { boiBlue, boiBorder, boiOrange } from "../../theme/theme";
+import { commonBlue, commonBorder, commonOrange } from "../../theme/theme";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -416,7 +416,7 @@ function MemoLogo() {
         <Box sx={{ textAlign: "right" }}>
           <Typography
             sx={{
-              color: boiBlue,
+              color: commonBlue,
               fontSize: 11,
               fontWeight: 700,
               lineHeight: 1.1,
@@ -426,7 +426,7 @@ function MemoLogo() {
           </Typography>
           <Typography
             sx={{
-              color: boiBlue,
+              color: commonBlue,
               fontSize: 12,
               fontWeight: 700,
               lineHeight: 1.1,
@@ -437,7 +437,7 @@ function MemoLogo() {
         </Box>
         <Typography
           sx={{
-            color: boiBlue,
+            color: commonBlue,
             fontSize: 32,
             fontWeight: 800,
             letterSpacing: "-0.04em",
@@ -446,7 +446,7 @@ function MemoLogo() {
         >
           BOI
         </Typography>
-        <Typography sx={{ color: boiOrange, fontSize: 34, lineHeight: 1 }}>
+        <Typography sx={{ color: commonOrange, fontSize: 34, lineHeight: 1 }}>
           ★
         </Typography>
       </Box>
@@ -479,7 +479,7 @@ function Footer({ page }) {
       }}
     >
       <Typography sx={{ fontSize: 10 }}>
-        Classification: <Box component="span" sx={{ color: boiBlue }}>Internal</Box>
+        Classification: <Box component="span" sx={{ color: commonBlue }}>Internal</Box>
       </Typography>
       <Typography sx={{ fontSize: 11.5, fontWeight: 600 }}>{page}</Typography>
     </Box>
@@ -1258,7 +1258,7 @@ export function VettingForm({
             mt: 2.5,
             p: 2,
             bgcolor: "rgba(0, 86, 150, 0.04)",
-            borderColor: boiBorder,
+          borderColor: commonBorder,
           }}
         >
           <Typography sx={{ fontWeight: 700, mb: 2 }}>

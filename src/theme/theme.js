@@ -1,22 +1,22 @@
 import { createTheme } from "@mui/material/styles";
 
-export const boiBlue = "#005DAA";
-export const boiBlueDark = "#004a8c";
-export const boiOrange = "#F37021";
-export const boiPageBg = "#F5F7FA";
-export const boiFilterBg = "#EBF3FB";
-export const boiTableHeaderBg = "#E3EEF8";
-export const boiInputSoftBg = "#EEF7FF";
-export const boiSuccessGreen = "#28a745";
-export const boiMutedText = "#5c6c7c";
-export const boiBorder = "#d8e2ec";
+export const commonBlue = "#005DAA";
+export const commonBlueDark = "#004a8c";
+export const commonOrange = "#F37021";
+export const commonPageBg = "#F5F7FA";
+export const commonFilterBg = "#EBF3FB";
+export const commonTableHeaderBg = "#E3EEF8";
+export const commonInputSoftBg = "#EEF7FF";
+export const commonSuccessGreen = "#28a745";
+export const commonMutedText = "#5c6c7c";
+export const commonBorder = "#d8e2ec";
 
 export const theme = createTheme({
   palette: {
-    primary: { main: boiBlue, contrastText: "#fff", dark: boiBlueDark },
-    secondary: { main: boiOrange, contrastText: "#fff" },
-    background: { default: boiPageBg, paper: "#fff" },
-    text: { primary: "#1a2b3c", secondary: boiMutedText },
+    primary: { main: commonBlue, contrastText: "#fff", dark: commonBlueDark },
+    secondary: { main: commonOrange, contrastText: "#fff" },
+    background: { default: commonPageBg, paper: "#fff" },
+    text: { primary: "#1a2b3c", secondary: commonMutedText },
   },
   typography: {
     fontFamily:
@@ -39,7 +39,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          "& .MuiOutlinedInput-notchedOutline": { borderColor: boiBorder },
+          "& .MuiOutlinedInput-notchedOutline": { borderColor: commonBorder },
         },
       },
     },

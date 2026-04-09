@@ -9,7 +9,11 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import { useState } from "react";
-import { boiBlue, boiTableHeaderBg, boiBorder } from "../../theme/theme";
+import {
+  commonBlue,
+  commonTableHeaderBg,
+  commonBorder,
+} from "../../theme/theme";
 
 function HeaderCell({ children, sortable, align }) {
   return (
@@ -18,10 +22,10 @@ function HeaderCell({ children, sortable, align }) {
       sx={{
         minWidth: 0,
         fontWeight: 700,
-        color: boiBlue,
+        color: commonBlue,
         fontSize: 13,
-        borderBottom: `1px solid ${boiBorder}`,
-        bgcolor: boiTableHeaderBg,
+        borderBottom: `1px solid ${commonBorder}`,
+        bgcolor: commonTableHeaderBg,
         py: 1.25,
       }}
     >
@@ -29,7 +33,7 @@ function HeaderCell({ children, sortable, align }) {
         {children}
         {sortable && (
           <UnfoldMoreIcon
-            sx={{ fontSize: 18, color: boiBlue, opacity: 0.55 }}
+            sx={{ fontSize: 18, color: commonBlue, opacity: 0.55 }}
           />
         )}
       </Box>
@@ -67,7 +71,7 @@ export function DataTable({
     <Paper
       elevation={0}
       sx={{
-        border: `1px solid ${boiBorder}`,
+        border: `1px solid ${commonBorder}`,
         borderRadius: "12px",
         overflow: "hidden",
         bgcolor: "#fff",
@@ -113,7 +117,7 @@ export function DataTable({
                       align={col.align}
                       sx={{
                         fontSize: 13,
-                        borderBottom: `1px solid ${boiBorder}`,
+                        borderBottom: `1px solid ${commonBorder}`,
                         py: 1.1,
                         color: "text.primary",
                       }}
@@ -151,13 +155,13 @@ export function DataTable({
         showFirstButton
         showLastButton
         sx={{
-          borderTop: `1px solid ${boiBorder}`,
+          borderTop: `1px solid ${commonBorder}`,
           bgcolor: "#fafbfc",
           "& .MuiTablePagination-toolbar": { minHeight: 52, px: 2 },
           "& .MuiTablePagination-select": { borderRadius: "8px" },
-          "& .MuiIconButton-root": { color: boiBlue },
+          "& .MuiIconButton-root": { color: commonBlue },
           "& .MuiTablePagination-actions .MuiIconButton-root": {
-            border: `1px solid ${boiBorder}`,
+            border: `1px solid ${commonBorder}`,
             borderRadius: "8px",
             mx: 0.25,
             bgcolor: "#fff",

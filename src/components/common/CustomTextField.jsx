@@ -8,11 +8,14 @@ import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { boiBlue, boiBorder, boiInputSoftBg } from "../../theme/theme";
+import { commonBlue, commonBorder, commonInputSoftBg } from "../../theme/theme";
 import dayjs from "dayjs";
 
 const soft = {
-  "& .MuiOutlinedInput-root": { bgcolor: boiInputSoftBg, borderRadius: "10px" },
+  "& .MuiOutlinedInput-root": {
+    bgcolor: commonInputSoftBg,
+    borderRadius: "10px",
+  },
 };
 
 const toDayjs = (value) => {
@@ -132,7 +135,7 @@ export function CustomTextField({
         </Typography>
         <Box
           sx={{
-            border: `1px dashed ${boiBorder}`,
+            border: `1px dashed ${commonBorder}`,
             borderRadius: "10px",
             p: 2,
             display: "flex",
@@ -147,7 +150,7 @@ export function CustomTextField({
           <Typography color="text.secondary">
             {value ? value.name : "Upload Attachment"}
           </Typography>
-          <CloudUploadIcon sx={{ color: boiBlue }} />
+          <CloudUploadIcon sx={{ color: commonBlue }} />
           <input
             id={`${name}-input`}
             type="file"
