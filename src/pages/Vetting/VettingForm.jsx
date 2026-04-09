@@ -1,14 +1,19 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Autocomplete from "@mui/material/Autocomplete";
 import InputBase from "@mui/material/InputBase";
 import Paper from "@mui/material/Paper";
+import Popover from "@mui/material/Popover";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import PrintIcon from "@mui/icons-material/Print";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import dayjs from "dayjs";
 import { CustomAutocomplete, CustomTextField } from "../../components/common";
 import { VETTING_CHECKLIST_SECTIONS } from "./VettingData";
 import { boiBlue, boiBorder, boiOrange } from "../../theme/theme";
@@ -173,6 +178,227 @@ function InlineBlank({
         />
       )}
     </Box>
+  );
+}
+
+function parseDateValue(value) {
+  if (!value) return null;
+  if (dayjs.isDayjs(value)) return value;
+
+  const formats = ["DD.MM.YYYY", "DD-MM-YYYY", "YYYY-MM-DD"];
+  for (const format of formats) {
+    const parsed = dayjs(value, format, true);
+    if (parsed.isValid()) {
+      return parsed;
+    }
+  }
+
+  const parsed = dayjs(value);
+  return parsed.isValid() ? parsed : null;
+}
+
+function MemoDateField({
+  value,
+  onChange,
+  readOnly,
+  format = "DD.MM.YYYY",
+  width,
+  inline = false,
+  formField = false,
+  label,
+  placeholder,
+  align = "center",
+}) {
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+
+  const renderedField = readOnly ? (
+    <Typography
+      component="div"
+      sx={{
+        width: "100%",
+        px: inline ? 0.5 : 0.75,
+        py: inline ? 0 : 0.3,
+        fontSize: 12,
+        lineHeight: inline ? 1.55 : 1.35,
+        textAlign: align,
+      }}
+    >
+      {value || "\u00a0"}
+    </Typography>
+  ) : (
+    <Box ref={anchorRef} sx={{ width: "100%" }}>
+      {inline ? (
+        <Box
+          component="input"
+          value={value || ""}
+          onClick={() => setOpen(true)}
+          readOnly
+          placeholder=""
+          sx={{
+            width: "100%",
+            fontSize: 12,
+            lineHeight: 1.55,
+            px: 0.5,
+            py: 0,
+            border: 0,
+            outline: 0,
+            bgcolor: "transparent",
+            font: "inherit",
+            textAlign: align,
+            cursor: "pointer",
+          }}
+        />
+      ) : formField ? (
+        <TextField
+          label={label}
+          fullWidth
+          size="small"
+          value={value || ""}
+          onClick={() => setOpen(true)}
+          inputProps={{ readOnly: true, placeholder: "" }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              bgcolor: "#fff",
+            },
+            "& .MuiInputBase-input": {
+              cursor: "pointer",
+            },
+          }}
+        />
+      ) : (
+        <InputBase
+          value={value || ""}
+          onClick={() => setOpen(true)}
+          readOnly
+          placeholder=""
+          sx={{
+            width: "100%",
+            px: 0.75,
+            py: 0.3,
+            minHeight: 22,
+            fontSize: 12,
+            lineHeight: 1.35,
+            "& input": {
+              p: 0,
+              font: "inherit",
+              lineHeight: "inherit",
+              textAlign: align,
+              cursor: "pointer",
+            },
+          }}
+        />
+      )}
+      <Popover
+        open={open}
+        anchorEl={anchorRef.current}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: inline ? "center" : "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: inline ? "center" : "left",
+        }}
+      >
+        <DateCalendar
+          value={parseDateValue(value)}
+          onChange={(newValue) => {
+            onChange(
+              newValue && dayjs(newValue).isValid()
+                ? dayjs(newValue).format(format)
+                : "",
+            );
+            setOpen(false);
+          }}
+        />
+      </Popover>
+    </Box>
+  );
+
+  if (inline) {
+    return (
+      <Box
+        sx={{
+          display: "inline-flex",
+          width,
+          minHeight: 18,
+          borderBottom: `1px solid ${documentBorder}`,
+          mx: 0.35,
+          verticalAlign: "baseline",
+        }}
+      >
+        {renderedField}
+      </Box>
+    );
+  }
+
+  return renderedField;
+}
+
+function MemoChoiceField({ value, onChange, readOnly, options = ["Yes", "No"] }) {
+  return readOnly ? (
+    <Typography
+      sx={{
+        width: "100%",
+        px: 0.75,
+        py: 0.3,
+        fontSize: 12,
+        lineHeight: 1.35,
+        textAlign: "center",
+      }}
+    >
+      {value || "\u00a0"}
+    </Typography>
+  ) : (
+    <Autocomplete
+      options={options}
+      value={options.includes(value) ? value : null}
+      onChange={(_, newValue) => onChange(newValue ?? "")}
+      openOnFocus
+      popupIcon={null}
+      clearIcon={null}
+      forcePopupIcon={false}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="standard"
+          placeholder=""
+          InputProps={{
+            ...params.InputProps,
+            disableUnderline: true,
+          }}
+          sx={{
+            width: "100%",
+            "& .MuiInputBase-root": {
+              px: 0.75,
+              py: 0.3,
+              minHeight: 22,
+            },
+            "& .MuiInput-root:before, & .MuiInput-root:after": {
+              borderBottom: "none !important",
+            },
+            "& .MuiInput-root:hover:not(.Mui-disabled, .Mui-error):before": {
+              borderBottom: "none !important",
+            },
+            "& .MuiInputBase-root:before, & .MuiInputBase-root:after": {
+              display: "none",
+            },
+            "& .MuiInputBase-input": {
+              p: 0,
+              fontSize: 12,
+              lineHeight: 1.35,
+              textAlign: "center",
+              cursor: "pointer",
+            },
+            "& .MuiAutocomplete-endAdornment": {
+              display: "none",
+            },
+          }}
+        />
+      )}
+    />
   );
 }
 
@@ -368,12 +594,10 @@ export function VettingForm({
             </TableCell>
           )}
           <TableCell sx={{ ...bodyCellSx, width: "16.5%" }}>
-            <MemoField
+            <MemoChoiceField
               value={values.checklistResponses?.[item.field]}
               onChange={(value) => updateChecklistResponse(item.field, value)}
               readOnly={readOnly}
-              align="center"
-              placeholder="Yes / No / NA"
             />
           </TableCell>
         </TableRow>
@@ -412,11 +636,13 @@ export function VettingForm({
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
               <Typography sx={{ fontSize: 12 }}>Date :</Typography>
-              <InlineBlank
+              <MemoDateField
                 value={values.date}
                 onChange={(value) => set("date", value)}
                 readOnly={readOnly}
+                inline
                 width={110}
+                format="DD.MM.YYYY"
                 placeholder="dd.mm.yyyy"
               />
             </Box>
@@ -486,10 +712,11 @@ export function VettingForm({
                   </Box>
                 </TableCell>
                 <TableCell sx={bodyCellSx}>
-                  <MemoField
+                  <MemoDateField
                     value={values.dateOfIncident}
                     onChange={(value) => set("dateOfIncident", value)}
                     readOnly={readOnly}
+                    format="DD.MM.YYYY"
                     placeholder="dd.mm.yyyy"
                   />
                 </TableCell>
@@ -499,10 +726,11 @@ export function VettingForm({
                   <Box sx={{ px: 0.75, py: 0.3 }}>Date of Investigation Order</Box>
                 </TableCell>
                 <TableCell sx={bodyCellSx}>
-                  <MemoField
+                  <MemoDateField
                     value={values.dateOfInvestigationOrder}
                     onChange={(value) => set("dateOfInvestigationOrder", value)}
                     readOnly={readOnly}
+                    format="DD.MM.YYYY"
                     placeholder="dd.mm.yyyy"
                   />
                 </TableCell>
@@ -514,12 +742,13 @@ export function VettingForm({
                   </Box>
                 </TableCell>
                 <TableCell sx={bodyCellSx}>
-                  <MemoField
+                  <MemoDateField
                     value={values.dateOfAllotmentInvestigation}
                     onChange={(value) =>
                       set("dateOfAllotmentInvestigation", value)
                     }
                     readOnly={readOnly}
+                    format="DD.MM.YYYY"
                     placeholder="dd.mm.yyyy"
                   />
                 </TableCell>
@@ -529,10 +758,11 @@ export function VettingForm({
                   <Box sx={{ px: 0.75, py: 0.3 }}>Date of Submission of report</Box>
                 </TableCell>
                 <TableCell sx={bodyCellSx}>
-                  <MemoField
+                  <MemoDateField
                     value={values.dateOfSubmissionReport}
                     onChange={(value) => set("dateOfSubmissionReport", value)}
                     readOnly={readOnly}
+                    format="DD.MM.YYYY"
                     placeholder="dd.mm.yyyy"
                   />
                 </TableCell>
@@ -541,7 +771,7 @@ export function VettingForm({
           </Table>
 
           <SectionHeading sx={{ mt: 1.75 }}>Present Reference</SectionHeading>
-          <Typography sx={{ fontSize: 12, lineHeight: 1.45 }}>
+          <Typography component="div" sx={{ fontSize: 12, lineHeight: 1.45 }}>
             We request reference to memo no- HO/VIG/Vetting/2023-24/
             <InlineBlank
               value={values.presentReferenceMemoNo}
@@ -550,11 +780,13 @@ export function VettingForm({
               width={86}
             />
             dated
-            <InlineBlank
+            <MemoDateField
               value={values.presentReferenceDate}
               onChange={(value) => set("presentReferenceDate", value)}
               readOnly={readOnly}
+              inline
               width={94}
+              format="DD-MM-YYYY"
               placeholder="dd-mm-yyyy"
             />
             where formation of Vetting Committee was approved by competent
@@ -782,7 +1014,7 @@ export function VettingForm({
                     />
                   </TableCell>
                   <TableCell sx={bodyCellSx}>
-                    <MemoField
+                    <MemoDateField
                       value={row.dateOfSuperannuation}
                       onChange={(value) =>
                         updateRow(
@@ -793,6 +1025,7 @@ export function VettingForm({
                         )
                       }
                       readOnly={readOnly}
+                      format="DD.MM.YYYY"
                       placeholder="dd.mm.yyyy"
                     />
                   </TableCell>
@@ -843,7 +1076,7 @@ export function VettingForm({
                     />
                   </TableCell>
                   <TableCell sx={bodyCellSx}>
-                    <MemoField
+                    <MemoDateField
                       value={row.dateOfSuspension}
                       onChange={(value) =>
                         updateRow(
@@ -854,6 +1087,7 @@ export function VettingForm({
                         )
                       }
                       readOnly={readOnly}
+                      format="DD.MM.YYYY"
                       placeholder="dd.mm.yyyy"
                     />
                   </TableCell>
@@ -941,13 +1175,15 @@ export function VettingForm({
             />
           </Box>
 
-          <Typography sx={{ fontSize: 12, lineHeight: 1.5, mt: 2.3 }}>
+          <Typography component="div" sx={{ fontSize: 12, lineHeight: 1.5, mt: 2.3 }}>
             Report has been perused and found in order Investigation Report dated
-            <InlineBlank
+            <MemoDateField
               value={values.reportPerusedDate}
               onChange={(value) => set("reportPerusedDate", value)}
               readOnly={readOnly}
+              inline
               width={120}
+              format="DD.MM.YYYY"
               placeholder="dd.mm.yyyy"
             />
             of Account
@@ -997,11 +1233,13 @@ export function VettingForm({
 
           <Box sx={{ mt: 3.5, display: "flex", alignItems: "center", flexWrap: "wrap" }}>
             <Typography sx={{ fontSize: 12.5, fontWeight: 700 }}>Date:</Typography>
-            <InlineBlank
+            <MemoDateField
               value={values.committeeDate}
               onChange={(value) => set("committeeDate", value)}
               readOnly={readOnly}
+              inline
               width={120}
+              format="DD-MM-YYYY"
               placeholder="dd-mm-yyyy"
               align="left"
             />
@@ -1049,10 +1287,13 @@ export function VettingForm({
               onChange={(_, value) => set("isFormVetted", value ?? "")}
               label="Is Form Vetted?"
             />
-            <CustomTextField
-              label="Date of Vetting"
+            <MemoDateField
               value={values.dateOfVetting}
-              onChange={(event) => set("dateOfVetting", event.target.value)}
+              onChange={(value) => set("dateOfVetting", value)}
+              readOnly={false}
+              formField
+              label="Date of Vetting"
+              format="DD.MM.YYYY"
               placeholder="dd.mm.yyyy"
             />
             <CustomTextField
