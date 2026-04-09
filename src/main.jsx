@@ -66,7 +66,7 @@ class WebComponent extends HTMLElement {
   }
 }
 
-const ELEMENT_NAME = "approval-form";
+const ELEMENT_NAME = "vetting-form";
 
 if (!customElements.get(ELEMENT_NAME)) {
   customElements.define(ELEMENT_NAME, WebComponent);
@@ -75,6 +75,6 @@ if (!customElements.get(ELEMENT_NAME)) {
 // For development - mount immediately if not in Web Component context
 if (import.meta.env.DEV && !document.querySelector(ELEMENT_NAME)) {
   const demoDiv = document.createElement("div");
-  demoDiv.innerHTML = "<approval-form></approval-form>";
+  demoDiv.innerHTML = "<vetting-form></vetting-form>";
   document.body.appendChild(demoDiv.firstChild);
 }

@@ -6,8 +6,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/main.jsx",
-      name: "ApprovalForm",
-      fileName: (format) => `approval-form.${format}.js`,
+      name: "VettingForm",
+      fileName: (format) => `vetting-form.${format}.js`,
       formats: ["es", "umd"],
     },
     rollupOptions: {

@@ -27,7 +27,7 @@ export const SOURCE_OPTS = [
 ];
 
 export const mockDashboard = {
-  approvalList: [
+  vettingList: [
     {
       id: "1",
       referenceNumber: "HO/VIG/2024/001",
@@ -47,7 +47,7 @@ export const mockDashboard = {
       amountInvolved: "500000",
       probableLoss: "250000",
       isFormApproved: "Pending",
-      dateOfApproval: "",
+      dateOfVetting: "",
       attachDocument: null,
       // New fields for expanded form
       nameOfAccount: "ABC Corporation",
@@ -99,7 +99,7 @@ export const mockDashboard = {
       amountInvolved: "0",
       probableLoss: "0",
       isFormApproved: "Yes",
-      dateOfApproval: "2024-01-20",
+      dateOfVetting: "2024-01-20",
       attachDocument: null,
       nameOfAccount: "XYZ Enterprises",
       dateOfComplaint: "2024-01-05",
@@ -149,7 +149,7 @@ export const mockDashboard = {
       amountInvolved: "1000000",
       probableLoss: "500000",
       isFormApproved: "No",
-      dateOfApproval: "",
+      dateOfVetting: "",
       attachDocument: null,
       nameOfAccount: "LMN Industries",
       dateOfComplaint: "2024-01-15",
@@ -180,7 +180,7 @@ export const mockDashboard = {
   ],
 };
 
-export const emptyApprovalForm = {
+export const emptyVettingForm = {
   // Reference section
   refNo: "",
   date: new Date().toISOString().slice(0, 10),
@@ -233,9 +233,9 @@ export const emptyApprovalForm = {
   deptObservation: "",
   cvoComments: "",
 
-  // Approval Status
+  // Vetting Status
   isFormApproved: "",
-  dateOfApproval: "",
+  dateOfVetting: "",
   attachDocument: null,
 
   // Scope Rows
@@ -246,7 +246,7 @@ export const emptyApprovalForm = {
   ],
 };
 
-export const approvalFormConfig = {
+export const vettingFormConfig = {
   sections: [
     {
       id: "reference",

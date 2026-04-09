@@ -11,7 +11,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { CustomAutocomplete, CustomTextField } from "../../components/common";
-import { approvalFormConfig } from "./ApprovalData";
+import { vettingFormConfig } from "./VettingData";
 import { boiBlue, boiBorder, boiTableHeaderBg } from "../../theme/theme";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -56,13 +56,13 @@ const formatDate = (value) => {
   return dayjs(value).format(DATE_FORMAT);
 };
 
-export function ApprovalForm({
+export function VettingForm({
   mode,
   values,
   onChange,
   title,
   onSaveDraft,
-  onSubmitApproval,
+  onSubmitVetting,
   onFinalSubmit,
   onPrint,
 }) {
@@ -649,7 +649,7 @@ export function ApprovalForm({
         pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
         heightLeft -= pdf.internal.pageSize.height;
       }
-      pdf.save(`Approval_Form_${values.refNo || "document"}.pdf`);
+      pdf.save(`Vetting_Form_${values.refNo || "document"}.pdf`);
       //   window.print();
     } catch (error) {
       console.error("Error generating PDF:", error);
@@ -750,7 +750,7 @@ export function ApprovalForm({
               fontSize: "1.1rem",
             }}
           >
-            Approval for detailed Vigilance Investigation
+            Vetting for detailed Vigilance Investigation
           </Typography>
           <Typography
             variant="subtitle1"
@@ -759,7 +759,7 @@ export function ApprovalForm({
             {title}
           </Typography>
 
-          {approvalFormConfig.sections.map((section) => (
+          {vettingFormConfig.sections.map((section) => (
             <Box key={section.id}>
               <Typography sx={{ fontWeight: 700, mb: 0.5, fontSize: 14 }}>
                 {section.title}
@@ -801,7 +801,7 @@ export function ApprovalForm({
                   //   onClick={handlePrint}
                   sx={{ flex: 1 }}
                 >
-                  Print Approval Form
+                  Print Vetting Form
                 </Button>
 
                 <Box sx={{ flex: 1 }}>
@@ -824,11 +824,11 @@ export function ApprovalForm({
               >
                 <Box sx={{ flex: 1 }}>
                   <DatePicker
-                    label="Date of Approval"
-                    value={toDayjs(values.dateOfApproval)}
+                    label="Date of Vetting"
+                    value={toDayjs(values.dateOfVetting)}
                     onChange={(date) =>
                       onChange({
-                        dateOfApproval: date ? date.format("YYYY-MM-DD") : "",
+                        dateOfVetting: date ? date.format("YYYY-MM-DD") : "",
                       })
                     }
                     // disabled={readOnly}
@@ -893,9 +893,9 @@ export function ApprovalForm({
                 variant="contained"
                 color="primary"
                 size="large"
-                onClick={onSubmitApproval}
+                onClick={onSubmitVetting}
               >
-                Submit to approval
+                Submit to vetting
               </Button>
             </Box>
           )}

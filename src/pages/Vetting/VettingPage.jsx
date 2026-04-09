@@ -3,31 +3,31 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { FormTabs } from "../../components/common/FormTabs";
 import { useToast } from "../../components/common/ToastContext";
-import { emptyApprovalForm, mockDashboard } from "./ApprovalData";
-import { ApprovalTable } from "./ApprovalTable";
-import { ApprovalForm } from "./ApprovalForm";
+import { emptyVettingForm, mockDashboard } from "./VettingData";
+import { VettingTable } from "./VettingTable";
+import { VettingForm } from "./VettingForm";
 
-function initialApprovalTab() {
+function initialVettingTab() {
   return "view";
 }
 
-export default function ApprovalPage() {
+export default function VettingPage() {
   const { success } = useToast();
-  const [mainTab, setMainTab] = useState(initialApprovalTab);
+  const [mainTab, setMainTab] = useState(initialVettingTab);
   const [viewPane, setViewPane] = useState("list");
   const [formMode, setFormMode] = useState("add");
-  const [formValues, setFormValues] = useState(() => emptyApprovalForm);
+  const [formValues, setFormValues] = useState(() => emptyVettingForm);
   const [selectedRowId, setSelectedRowId] = useState(null);
 
   const patchForm = (patch) => setFormValues((prev) => ({ ...prev, ...patch }));
 
   const formFromRow = (row) => {
-    const foundRow = mockDashboard.approvalList.find((r) => r.id === row.id);
+    const foundRow = mockDashboard.vettingList.find((r) => r.id === row.id);
     if (foundRow) {
       return { ...foundRow };
     }
     return {
-      ...emptyApprovalForm,
+      ...emptyVettingForm,
       refNo: row.referenceNumber,
       typeOfComplaint: row.typeOfComplaint,
       sourceOfComplaint: row.sourceOfComplaint,
@@ -53,7 +53,7 @@ export default function ApprovalPage() {
   };
 
   const openAdd = () => {
-    setFormValues(emptyApprovalForm);
+    setFormValues(emptyVettingForm);
     setSelectedRowId(null);
     setFormMode("add");
     setMainTab("add");
@@ -65,7 +65,7 @@ export default function ApprovalPage() {
       setViewPane("list");
     } else {
       setFormMode("add");
-      setFormValues(emptyApprovalForm);
+      setFormValues(emptyVettingForm);
       setSelectedRowId(null);
     }
   };
@@ -77,11 +77,11 @@ export default function ApprovalPage() {
     success("Draft saved successfully");
   };
 
-  const handleSubmitApproval = () => {
-    console.log("=== SUBMITTED FOR APPROVAL ===");
+  const handleSubmitVetting = () => {
+    console.log("=== SUBMITTED FOR VETTING ===");
     console.log("Form Values:", JSON.stringify(formValues, null, 2));
     console.log("Form Mode:", formMode);
-    success("Submitted for approval");
+    success("Submitted for vetting");
   };
 
   const handleFinalSubmit = () => {
@@ -99,14 +99,14 @@ export default function ApprovalPage() {
 
   const docTitle =
     formMode === "add"
-      ? "Add Approval Forms"
+      ? "Add Vetting Forms"
       : formMode === "update"
-        ? "Update Approval Form"
-        : "View Approval Forms";
+        ? "Update Vetting Form"
+        : "View Vetting Forms";
 
-  const APPROVAL_TABS = [
-    { value: "view", label: "View Approval Forms" },
-    { value: "add", label: "Add Approval Form" },
+  const VETTING_TABS = [
+    { value: "view", label: "View Vetting Forms" },
+    { value: "add", label: "Add Vetting Form" },
   ];
 
   return (
@@ -114,11 +114,11 @@ export default function ApprovalPage() {
       <FormTabs
         value={mainTab}
         onChange={handleTabChange}
-        tabs={APPROVAL_TABS}
+        tabs={VETTING_TABS}
       />
 
       {mainTab === "view" && viewPane === "list" && (
-        <ApprovalTable
+        <VettingTable
           onAdd={openAdd}
           onView={openViewDocument}
           onUpdate={openUpdate}
@@ -134,7 +134,7 @@ export default function ApprovalPage() {
           >
             ← Back to list
           </Button>
-          <ApprovalForm
+          <VettingForm
             mode="view"
             values={formValues}
             onChange={patchForm}
@@ -146,13 +146,13 @@ export default function ApprovalPage() {
       )}
 
       {mainTab === "add" && (
-        <ApprovalForm
+        <VettingForm
           mode={formMode === "update" ? "update" : "add"}
           values={formValues}
           onChange={patchForm}
           title={docTitle}
           onSaveDraft={handleSaveDraft}
-          onSubmitApproval={handleSubmitApproval}
+          onSubmitVetting={handleSubmitVetting}
         />
       )}
     </Box>

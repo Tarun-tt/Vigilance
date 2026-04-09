@@ -10,7 +10,7 @@ import {
   TYPE_OPTS,
   SOURCE_OPTS,
   mockDashboard,
-} from "./ApprovalData";
+} from "./VettingData";
 
 const columns = [
   { id: "sn", label: "S.N.", format: (_r, sn) => String(sn).padStart(2, "0") },
@@ -51,11 +51,11 @@ const columns = [
   },
 ];
 
-export function ApprovalTable({ onAdd, onView, onUpdate }) {
-  const [filteredRows, setFilteredRows] = useState(mockDashboard.approvalList);
+export function VettingTable({ onAdd, onView, onUpdate }) {
+  const [filteredRows, setFilteredRows] = useState(mockDashboard.vettingList);
 
   const handleSearch = (searchParams) => {
-    let filtered = [...mockDashboard.approvalList];
+    let filtered = [...mockDashboard.vettingList];
 
     if (searchParams.status !== "All Statuses") {
       filtered = filtered.filter((row) => row.status === searchParams.status);
@@ -82,7 +82,7 @@ export function ApprovalTable({ onAdd, onView, onUpdate }) {
   };
 
   const handleReset = () => {
-    setFilteredRows(mockDashboard.approvalList);
+    setFilteredRows(mockDashboard.vettingList);
   };
 
   const enhancedColumns = columns.map((col) => {
@@ -100,7 +100,7 @@ export function ApprovalTable({ onAdd, onView, onUpdate }) {
       <Typography
         sx={{ fontWeight: 700, mb: 2, color: boiBlue, fontSize: "1.15rem" }}
       >
-        View Approval Forms
+        View Vetting Forms
       </Typography>
       <FilterBar
         statusOptions={STATUS_OPTS}
@@ -125,7 +125,7 @@ export function ApprovalTable({ onAdd, onView, onUpdate }) {
           variant="h6"
           sx={{ flex: 1, fontWeight: 700, fontSize: "1.05rem" }}
         >
-          Approval List ({filteredRows.length} records)
+          Vetting List ({filteredRows.length} records)
         </Typography>
         <Button
           variant="contained"
@@ -134,7 +134,7 @@ export function ApprovalTable({ onAdd, onView, onUpdate }) {
           onClick={onAdd}
           sx={{ borderRadius: "10px" }}
         >
-          + Add Approval Form
+          + Add Vetting Form
         </Button>
       </Box>
       <DataTable
